@@ -1,25 +1,12 @@
 script:
   - id: update_time
     then:
-      - if:
-          condition:
-            lambda: 'return id(use_24h_clock);'
-          then:
-            - lvgl.label.update:
-                id: lvgl_current_time
-                text:
-                  format: "%02d:%02d"
-                  args: [ 'id(homeassistant_time).now().hour', 'id(homeassistant_time).now().minute' ]
-          else:
-            - lvgl.label.update:
-                id: lvgl_current_time
-                text: !lambda |-
-                  auto now = id(homeassistant_time).now();
-                  int hour = now.hour % 12 == 0 ? 12 : now.hour % 12;
-                  auto am_pm = now.hour >= 12 ? "PM" : "AM";
-                  static char time_text[10];
-                  snprintf(time_text, sizeof(time_text), "%d:%02d %s", hour, now.minute, am_pm);
-                  return time_text;
+      - lvgl.label.update:
+          id: lvgl_current_time
+          text:
+            format: "%02d:%02d"
+            args: [ 'id(homeassistant_time).now().hour', 'id(homeassistant_time).now().minute' ]
+
 
   - id: hide_page_control_elements
     then:

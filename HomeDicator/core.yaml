@@ -9,9 +9,6 @@ text_sensor:
 binary_sensor:
   - !include core/config/common/binary_sensors/indicator_button.yaml
 
-switch:
-  - !include core/config/common/switches/use_24h_clock_switch.yaml
-
 lvgl:
   disp_bg_color: 0x1b1b1b
   gradients: !include core/config/common/lvgl/gradients.yaml
