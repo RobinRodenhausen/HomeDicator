@@ -1,0 +1,108 @@
+substitutions:
+  # -----------------------
+  # ADJUST DEVICE NAME HERE
+  # -----------------------
+  device_name: "sdl-simulator"
+  device_friendly_name: "SDL Simulator"
+
+  # ------------------
+  # ENTER API KEY HERE
+  # ------------------
+  api_key: "1YVnWKmTqIqoDgMNxjx+nU61w4hPRHY+H8RKvB+kghQ="
+
+  # ----------------------------------------------------------------------------------------------------
+  # ADJUST TOTAL NUMBER OF PAGES HERE
+  # Is used to generate navigation dots and their logic (set it to your pages + 1 for the settings page)
+  # ----------------------------------------------------------------------------------------------------
+  total_pages: "3"
+
+  # --------------
+  # OTHER SETTINGS
+  # --------------
+  page_transition_time: 150ms # How long to animate the transition between pages.
+  user_interface_debug_mode: "false" # Draws borders around objects and labels for layouting
+
+packages:
+  HomeDicator: !include HomeDicator/device/sdl.yaml
+
+sensor:
+  # -----------------------------------------------------------------------
+  # ADD YOUR SENSORS HERE
+  # Because of the way ESPHOME works lights, thermostats, etc also go here
+  # They need to be included here in order for the display to update values.
+  # -----------------------------------------------------------------------
+
+  - !include
+      file: HomeDicator/core/templates/sensor.yaml
+      vars:
+        hass_sensor_id: "temp1" # You can ommit the "sensor."
+
+  - !include
+      file: HomeDicator/core/templates/sensor.yaml
+      vars:
+        hass_sensor_id: "temp2" # You can ommit the "sensor."
+
+binary_sensor:
+  # ---------------------
+  # ADD YOUR SENSORS HERE
+  # ---------------------
+
+
+switch:
+  # ----------------------
+  # ADD YOUR SWITCHES HERE
+  # ----------------------
+
+
+
+lvgl:
+  pages:
+    # ----------------------------
+    # ADD / ADJUST YOUR PAGES HERE
+    # ----------------------------
+    - id: first_page
+      bg_opa: TRANSP
+      widgets:
+        - !include
+            file: HomeDicator/user_interface/templates/page_title.yaml
+            vars:
+              title: "Temperature" # CHANGE PAGE TITLE HERE
+        - obj:
+            styles: content_container
+            layout:
+              type: FLEX
+              flex_flow: ROW_WRAP
+              flex_align_main: LV_FLEX_ALIGN_START
+              flex_align_cross: CENTER
+            widgets:
+              - !include
+                  file: HomeDicator/user_interface/templates/tiles/sensor/wide.yaml
+                  vars:
+                    color: 0xeebf41
+                    hass_sensor_id: "temp1"
+                    unit: "°C"
+                    icon: "\U000F08A0"
+                    title: "Temp 1"
+    - id: second_page
+      bg_opa: TRANSP
+      widgets:
+        - !include
+            file: HomeDicator/user_interface/templates/page_title.yaml
+            vars:
+              title: "Sensors" # CHANGE PAGE TITLE HERE
+        - obj:
+            styles: content_container
+            layout:
+              type: FLEX
+              flex_flow: ROW_WRAP
+              flex_align_main: LV_FLEX_ALIGN_START
+              flex_align_cross: CENTER
+            widgets:
+              - !include
+                  file: HomeDicator/user_interface/templates/tiles/sensor/square.yaml
+                  vars:
+                    color: 0xeebf41
+                    hass_sensor_id: "temp2"
+                    icon: "\U000F0F55"
+                    unit: "°C"
+                    title: "Temp 2"
