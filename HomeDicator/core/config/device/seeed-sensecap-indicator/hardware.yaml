@@ -111,3 +111,70 @@ wifi:
       - lvgl.label.update:
           id: lvgl_wifi_signal_icon
           text: "\U000F092E"
+
+uart:
+  - id: rp2040_serial
+    tx_pin: GPIO20
+    rx_pin: GPIO19
+    baud_rate: 115200
+
+packet_transport:
+  - platform: uart
+    uart_id: rp2040_serial
+    providers:
+      - name: d1-rp2040
+
+sensor:
+  - platform: packet_transport
+    provider: d1s-rp2040
+    id: voc
+    name: VOC Index
+    internal: False
+    accuracy_decimals: 0
+    icon: "mdi:weather-dust"
+    device_class: aqi
+  - platform: packet_transport
+    provider: d1s-rp2040
+    id: co2
+    name: CO2
+    internal: False
+    accuracy_decimals: 0
+    icon: "mdi:molecule-co2"
+    unit_of_measurement: "ppm"
+    device_class: volatile_organic_compounds_parts
+  - platform: packet_transport
+    provider: d1s-rp2040
+    id: temp
+    name: Temperature
+    internal: False
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    unit_of_measurement: "°C"
+    device_class: temperature
+  - platform: packet_transport
+    provider: d1s-rp2040
+    id: humid
+    name: Humidity
+    internal: False
+    accuracy_decimals: 1
+    icon: "mdi:water-percent"
+    unit_of_measurement: "%"
+    device_class: humidity
+  - platform: packet_transport
+    provider: d1s-rp2040
+    id: temp_internal
+    name: "Temperature Internal"
+    internal: False
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    unit_of_measurement: "°C"
+    device_class: temperature
+  - platform: packet_transport
+    provider: d1s-rp2040
+    id: humid_internal
+    name: "Humidity Internal"
+    internal: False
+    accuracy_decimals: 1
+    icon: "mdi:water-percent"
+    unit_of_measurement: "%"
+    device_class: humidity
