@@ -5,4 +5,9 @@ on_value:
     then:
       - lvgl.label.update:
           id: esphome_version_ui_label
-          text: !lambda return x;
+          # Only keep the version on remove the config hash
+          text: !lambda |-
+            std::string v = x;
+            auto pos = v.find(' ');
+            if (pos != std::string::npos) v = v.substr(0, pos);
+            return v;
