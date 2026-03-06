@@ -15,4 +15,8 @@ on_press:
         then:
           - script.execute: activity_detected
         else:
-          - script.execute: activity_timeout_reached
+          - logger.log: "Button pressed - turning screen off"
+          - light.turn_off: indicator_display_backlight
+          - delay: 200ms
+          - lvgl.pause:
+              show_snow: true
