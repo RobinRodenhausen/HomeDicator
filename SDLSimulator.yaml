@@ -10,12 +10,6 @@ substitutions:
   # ------------------
   api_key: "1YVnWKmTqIqoDgMNxjx+nU61w4hPRHY+H8RKvB+kghQ="
 
-  # ----------------------------------------------------------------------------------------------------
-  # ADJUST TOTAL NUMBER OF PAGES HERE
-  # Is used to generate navigation dots and their logic (set it to your pages + 1 for the settings page)
-  # ----------------------------------------------------------------------------------------------------
-  total_pages: "3"
-
   # --------------
   # OTHER SETTINGS
   # --------------

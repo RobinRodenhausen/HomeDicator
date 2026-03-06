@@ -4,8 +4,12 @@ globals:
     restore_value: no
     initial_value: "0"
   - id: pager_dots
-    type: lv_obj_t*[${total_pages}]
+    type: std::vector<lv_obj_t*>
     restore_value: no
+  - id: total_pages
+    type: int
+    restore_value: no
+    initial_value: "0"
   - id: user_is_interacting
     type: bool
     initial_value: "false"

@@ -40,9 +40,12 @@ esphome:
             };
 
             lv_disp_t* disp = lv_disp_get_default();
+            lv_obj_t* default_scr = disp->screens[0];  // LVGL default screen created during init
             for (uint32_t s = 0; s < disp->screen_cnt; s++) {
               lv_obj_t* scr = disp->screens[s];
 
+              // Skip LVGL internal screens (default screen, top layer, system layer)
+              if (scr == default_scr || scr == disp->top_layer || scr == disp->sys_layer) continue;
               // Skip about page
               if (scr == id(about)->obj) {
                 continue;

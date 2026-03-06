@@ -27,7 +27,21 @@ script:
   - id: create_pager_dots
     then:
       - lambda: |-
-          for (int i = 0; i < ${total_pages}; i++) {
+          // Count ESPHome pages, skipping LVGL internal screens and the about page
+          lv_disp_t* disp = lv_disp_get_default();
+          lv_obj_t* default_scr = disp->screens[0];  // LVGL default screen created during init
+          int page_count = 0;
+          for (uint32_t s = 0; s < disp->screen_cnt; s++) {
+            lv_obj_t* scr = disp->screens[s];
+            // Skip LVGL internal screens (default screen, top layer, system layer)
+            if (scr == default_scr || scr == disp->top_layer || scr == disp->sys_layer) continue;
+            if (scr == id(about)->obj) continue;  // Skip about page
+            page_count++;
+          }
+          id(total_pages) = page_count;
+
+          id(pager_dots).clear();
+          for (int i = 0; i < page_count; i++) {
             auto dot = lv_obj_create(id(bottom_pager));  // Create each dot object
             lv_obj_set_size(dot, 8, 8);  // Set width and height of the dot (8x8)
             lv_obj_set_style_radius(dot, 4, LV_PART_MAIN);  // Set radius to make it circular
@@ -35,7 +49,7 @@ script:
             lv_obj_set_style_bg_opa(dot, LV_OPA_COVER, LV_PART_MAIN);  // Ensure the background is fully opaque
             lv_obj_set_style_border_width(dot, 0, LV_PART_MAIN);  // Disable borders
             lv_obj_set_style_border_color(dot, lv_color_hex(0x000000), LV_PART_MAIN);  // Set border color to black (doesn't matter since width is 0)
-            id(pager_dots)[i] = dot;  // Store the dot reference
+            id(pager_dots).push_back(dot);  // Store the dot reference
           }
 
   - id: next_page
@@ -44,12 +58,12 @@ script:
           id: current_page
           value: !lambda |-
             int next_page = id(current_page) + 1;
-            return (next_page >= ${total_pages}) ? 0 : next_page;  // Loop back to 0 if exceeding the total pages
+            return (next_page >= id(total_pages)) ? 0 : next_page;  // Loop back to 0 if exceeding the total pages
       - lvgl.page.next:
           animation: MOVE_LEFT
           time: ${page_transition_time}
       - lambda: |-
-          for (int i = 0; i < ${total_pages}; i++) {
+          for (int i = 0; i < id(total_pages); i++) {
             lv_obj_t* dot = id(pager_dots)[i];
             lv_obj_set_style_bg_color(dot, (i == id(current_page)) ? lv_color_hex(0xffffff) : lv_color_hex(0x626262), LV_PART_MAIN);  // Active color is white, inactive is gray
           }
@@ -60,12 +74,12 @@ script:
           id: current_page
           value: !lambda |-
             int prev_page = id(current_page) - 1;
-            return (prev_page < 0) ? ${total_pages} - 1 : prev_page;  // Loop back to max page if going below 0
+            return (prev_page < 0) ? id(total_pages) - 1 : prev_page;  // Loop back to max page if going below 0
       - lvgl.page.previous:
           animation: MOVE_RIGHT
           time: ${page_transition_time}
       - lambda: |-
-          for (int i = 0; i < ${total_pages}; i++) {
+          for (int i = 0; i < id(total_pages); i++) {
             lv_obj_t* dot = id(pager_dots)[i];
             lv_obj_set_style_bg_color(dot, (i == id(current_page)) ? lv_color_hex(0xffffff) : lv_color_hex(0x626262), LV_PART_MAIN);  // Active color is white, inactive is gray
           }
