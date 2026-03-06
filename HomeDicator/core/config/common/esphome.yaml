@@ -68,15 +68,7 @@ esphome:
               }
             }
 
-            // Populate IP address label
-            auto ips = network::get_ip_addresses();
-            char buf[40];
-            ips[0].str_to(buf);
-            if (strlen(buf) > 0 && strcmp(buf, "0.0.0.0") != 0) {
-              lv_label_set_text(id(ip_address_ui_label), buf);
-            } else {
-              lv_label_set_text(id(ip_address_ui_label), "N/A");
-            }
+
 
 logger:
   level: DEBUG # TODO: Change back
@@ -92,6 +84,16 @@ api:
         then:
           - delay: 2s # So all sensors can load their values
           - lvgl.widget.hide: connecting_view
+          - lambda: |-
+              // Update IP address label now that WiFi is connected
+              auto ips = network::get_ip_addresses();
+              char buf[40];
+              ips[0].str_to(buf);
+              if (strlen(buf) > 0 && strcmp(buf, "0.0.0.0") != 0) {
+                lv_label_set_text(id(ip_address_ui_label), buf);
+              } else {
+                lv_label_set_text(id(ip_address_ui_label), "N/A");
+              }
   on_client_disconnected:
     - if:
         condition:
