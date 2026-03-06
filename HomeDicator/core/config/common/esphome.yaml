@@ -29,6 +29,7 @@ esphome:
       then:
         - lambda: |-
             // Register swipe gesture callbacks on all LVGL screens (pages)
+            // Skip settings and about pages (they use skip: true / back navigation)
             static auto gesture_cb = [](lv_event_t* e) {
               lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_get_act());
               if (dir == LV_DIR_LEFT) {
@@ -41,6 +42,12 @@ esphome:
             lv_disp_t* disp = lv_disp_get_default();
             for (uint32_t s = 0; s < disp->screen_cnt; s++) {
               lv_obj_t* scr = disp->screens[s];
+
+              // Skip about page
+              if (scr == id(about)->obj) {
+                continue;
+              }
+
               lv_obj_add_event_cb(scr, gesture_cb, LV_EVENT_GESTURE, nullptr);
 
               // BFS: set EVENT_BUBBLE on all children so gestures propagate up to the screen
@@ -56,6 +63,16 @@ esphome:
                   queue.push_back(lv_obj_get_child(obj, i));
                 }
               }
+            }
+
+            // Populate IP address label
+            auto ips = network::get_ip_addresses();
+            char buf[40];
+            ips[0].str_to(buf);
+            if (strlen(buf) > 0 && strcmp(buf, "0.0.0.0") != 0) {
+              lv_label_set_text(id(ip_address_ui_label), buf);
+            } else {
+              lv_label_set_text(id(ip_address_ui_label), "N/A");
             }
 
 logger:
