@@ -8,3 +8,14 @@
       position: 80
     - color: 0xc84545
       position: 255
+
+- id: brightness_slider
+  direction: hor
+  dither: ordered
+  stops:
+    - color: 0x333333
+      position: 0
+    - color: 0xeebf41
+      position: 128
+    - color: 0xffffff
+      position: 255

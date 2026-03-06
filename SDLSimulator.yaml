@@ -85,6 +85,14 @@ sensor:
       vars:
         hass_sensor_id: "temp2"
 
+  - !include
+      file: HomeDicator/core/templates/light_sensor.yaml
+      vars:
+        hass_light_id: "light1"
+        color: "0xeebf41"
+        icon: "\U000F0335"
+        icon_off: "\U000F0336"
+
 binary_sensor:
   # ---------------------
   # ADD YOUR SENSORS HERE
@@ -173,3 +181,10 @@ lvgl:
                     icon: "\U000F0F55"
                     unit: "°C"
                     title: "Temp 2"
+              - !include
+                  file: HomeDicator/user_interface/templates/tiles/light/wide_half_height.yaml
+                  vars:
+                    color: 0xeebf41
+                    hass_light_id: "light1"
+                    icon: "\U000F0335"
+                    icon_off: "\U000F0336"
