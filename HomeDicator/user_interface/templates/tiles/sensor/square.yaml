@@ -9,6 +9,7 @@ obj:
     pad_row: 0
   widgets:
     - obj:
+        id: lvgl_icon_bg_${hass_sensor_id}
         bg_opa: COVER
         bg_color: ${color}
         pad_all: 0

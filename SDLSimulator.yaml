@@ -33,24 +33,52 @@ sensor:
   # -----------------------------------------------------------------------
 
   - !include
-      file: HomeDicator/core/templates/sensor.yaml
+      file: HomeDicator/core/templates/sensor_color.yaml
       vars:
         hass_sensor_id: "temp1"
+        threshold_1: "10"
+        threshold_2: "20"
+        threshold_3: "30"
+        color_1: "0x4169e1"   # blue  - below 10
+        color_2: "0x2e8b57"   # green - 10 to 20
+        color_3: "0xeebf41"   # yellow - 20 to 30
+        color_4: "0xdc143c"   # red   - above 30
 
   - !include
-      file: HomeDicator/core/templates/sensor.yaml
+      file: HomeDicator/core/templates/sensor_color.yaml
       vars:
         hass_sensor_id: "humidity1"
+        threshold_1: "0"
+        threshold_2: "40"
+        threshold_3: "60"
+        color_1: "0xdc143c"   # red   - below 0
+        color_2: "0xeebf41"   # yellow - 0 to 40
+        color_3: "0x2e8b57"   # green - 40 to 60
+        color_4: "0x4169e1"   # blue  - above 60
 
   - !include
-      file: HomeDicator/core/templates/sensor.yaml
+      file: HomeDicator/core/templates/sensor_color.yaml
       vars:
         hass_sensor_id: "co21"
+        threshold_1: "400"
+        threshold_2: "1000"
+        threshold_3: "1500"
+        color_1: "0x4169e1"   # blue  - below 400
+        color_2: "0x2e8b57"   # green - 400 to 1000
+        color_3: "0xeebf41"   # yellow - 1000 to 1500
+        color_4: "0xdc143c"   # red   - above 1500
 
   - !include
-      file: HomeDicator/core/templates/sensor.yaml
+      file: HomeDicator/core/templates/sensor_color.yaml
       vars:
         hass_sensor_id: "voc1"
+        threshold_1: "80"
+        threshold_2: "150"
+        threshold_3: "200"
+        color_1: "0x4169e1"   # blue  - below 80
+        color_2: "0x2e8b57"   # green - 80 to 150
+        color_3: "0xeebf41"   # yellow - 150 to 200
+        color_4: "0xdc143c"   # red   - above 200
 
   - !include
       file: HomeDicator/core/templates/sensor.yaml
